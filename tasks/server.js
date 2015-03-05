@@ -26,7 +26,7 @@ module.exports = function (gulp, config) {
     },
 
     test: function (cb) {
-      var command = 'APP_ROOT_PATH=./'+ config.server.path + ' NODE_ENV=test node_modules/mocha/bin/mocha --reporter dot --harmony --colors --require co-mocha "' + config.server.path + '**/*.spec.js"';
+      var command = 'APP_ROOT_PATH=./'+ config.server.path + ' NODE_ENV=test node_modules/boar-tasks/node_modules/mocha/bin/mocha --reporter dot --harmony --colors --require co-mocha "' + config.server.path + '**/*.spec.js"';
 
       exec(command, function (err, stdout, stderr) {
         console.log(stdout);

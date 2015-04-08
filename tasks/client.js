@@ -20,11 +20,6 @@ var isProduction = argv.production;
 
 module.exports = function (gulp, config) {
 
-  var errorReport = function(err) {
-    console.log(err.toString());
-    this.emit('end');
-  };
-
   return {
     copyStatic: function () {
       return gulp.src(config.client.static.copyPattern)
@@ -64,7 +59,7 @@ module.exports = function (gulp, config) {
         .pipe(gulp.dest(config.client.app.target));
     },
 
-    buildScripts: function () {
+    buildScripts: function (denyErrors) {
       var browserified = transform(function (filename) {
         var b = browserify({
           entries: [filename],
@@ -74,13 +69,24 @@ module.exports = function (gulp, config) {
         return b.bundle();
       });
 
-      return gulp.src([config.client.app.buildPattern])
+      var browserifiedTask = gulp.src([config.client.app.buildPattern])
         .pipe(plumber())
-        .pipe(browserified)
-        .on('error', errorReport)
+        .pipe(browserified);
+
+      if (denyErrors) browserifiedTask = browserifiedTask.on('error', function(err) {
+        console.log(err.toString());
+        this.emit('end');
+      });
+
+      return browserifiedTask
+        .pipe(gulpif(isProduction, uglify({mangle: false})))
         .pipe(gulpif(isProduction, uglify({mangle: false})))
         .pipe(extReplace('.js'))
         .pipe(gulp.dest(config.client.app.target));
+    },
+
+    buildScriptsDenyErrors: function () {
+      return this.buildScripts(true);
     },
 
     buildVendors: function () {

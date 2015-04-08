@@ -19,6 +19,12 @@ var extReplace = require('gulp-ext-replace');
 var isProduction = argv.production;
 
 module.exports = function (gulp, config) {
+
+  var errorReport = function(err) {
+    console.log(err.toString());
+    this.emit('end');
+  };
+
   return {
     copyStatic: function () {
       return gulp.src(config.client.static.copyPattern)
@@ -71,6 +77,7 @@ module.exports = function (gulp, config) {
       return gulp.src([config.client.app.buildPattern])
         .pipe(plumber())
         .pipe(browserified)
+        .on('error', errorReport)
         .pipe(gulpif(isProduction, uglify({mangle: false})))
         .pipe(extReplace('.js'))
         .pipe(gulp.dest(config.client.app.target));

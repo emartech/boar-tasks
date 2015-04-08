@@ -33,7 +33,7 @@ Config.client = {
     extensions: ['.js'],
     buildPattern: 'client/app/!(*.spec).js',
     testPattern: 'client/app/**/*.spec.js',
-    testModules: [],
+    testModules: ['node_modules/angular-mocks/angular-mocks.js'],
     watchPattern: 'client/app/**/*.js',
     viewPattern: 'client/app/views/**/*.jade',
     vendorPattern: 'client/vendors.js',

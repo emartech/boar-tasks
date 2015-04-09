@@ -15,13 +15,13 @@ module.exports = function (gulp, config) {
   return {
 
     test: function(done) {
-      var arguments = [
+      var args = [
         '--specs=' + config.e2e.filePattern,
         '--baseUrl=' + config.e2e.baseUrl,
         '--framework=jasmine'
       ];
 
-      child_process.spawn(getProtractorBinary('protractor'), arguments, {
+      child_process.spawn(getProtractorBinary('protractor'), args, {
           stdio: 'inherit'
       }).once('close', done);
     },

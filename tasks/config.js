@@ -5,6 +5,11 @@ Config.build = {
   assetsPath: 'dist/assets/'
 };
 
+Config.e2e = {
+  filePattern: ['e2e/**/*.spec.js'],
+  baseUrl: 'http://localhost:9100'
+};
+
 Config.server = {
   path: 'server/',
   runnable: Config.build.distPath + 'server.js',

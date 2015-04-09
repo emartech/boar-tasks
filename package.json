@@ -44,7 +44,7 @@
     "karma-phantomjs-launcher": "0.1.4",
     "karma-sinon-chai": "0.3.0",
     "lodash": "3.6.0",
-    "mocha": "2.1.0",
+    "mocha": "2.2.4",
     "protractor": "1.8.0",
     "run-sequence": "1.0.2",
     "through2": "0.6.3",

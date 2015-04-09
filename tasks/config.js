@@ -26,14 +26,13 @@ Config.client = {
   'static': {
     copyPattern: 'client/static/**/*',
     watchPattern: 'client/static/**/*',
-    target: Config.build.assetsPath,
-    vendors: ['angular']
+    target: Config.build.assetsPath
   },
   app: {
     extensions: ['.js'],
     buildPattern: 'client/app/!(*.spec).js',
     testPattern: 'client/app/**/*.spec.js',
-    testModules: ['node_modules/angular-mocks/angular-mocks.js'],
+    testModules: [],
     watchPattern: 'client/app/**/*.js',
     viewPattern: 'client/app/views/**/*.jade',
     vendorPattern: 'client/vendors.js',
@@ -46,9 +45,7 @@ Config.client = {
     target: Config.build.assetsPath + 'css/',
     plugins: []
   },
-  vendors: [
-    'node_modules/angular/angular.js'
-  ]
+  vendors: []
 };
 
 module.exports = Config;

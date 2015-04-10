@@ -6,8 +6,7 @@ Config.build = {
 };
 
 Config.e2e = {
-  filePattern: ['e2e/**/*.spec.js'],
-  baseUrl: 'http://localhost:9100'
+  configPath: process.cwd() + '/protractor.conf.js',
 };
 
 Config.server = {

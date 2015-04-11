@@ -16,8 +16,7 @@
     "url": "https://github.com/emartech/boar-tasks/issues"
   },
   "dependencies": {
-    "browserify": "9.0.3",
-    "browserify-shim": "3.8.3",
+    "browserify": "9.0.8",
     "co-mocha": "1.1.0",
     "deep-extend": "0.3.3",
     "del": "1.1.1",
@@ -39,7 +38,7 @@
     "gulp-util": "3.0.4",
     "gulp-watch": "4.2.4",
     "karma": "0.12.31",
-    "karma-browserify": "4.0.0",
+    "karma-browserify": "4.1.2",
     "karma-mocha": "0.1.10",
     "karma-phantomjs-launcher": "0.1.4",
     "karma-sinon-chai": "0.3.0",
@@ -47,10 +46,11 @@
     "mocha": "2.2.4",
     "protractor": "1.8.0",
     "run-sequence": "1.0.2",
-    "through2": "0.6.3",
+    "through2": "0.6.5",
+    "vinyl": "^0.4.6",
     "vinyl-transform": "1.0.0",
     "watchify": "3.1.0",
-    "yargs": "3.7.0"
+    "yargs": "3.7.1"
   },
   "homepage": "https://github.com/emartech/boar-tasks"
 }

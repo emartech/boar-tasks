@@ -33,6 +33,7 @@ Config.client = {
     target: Config.build.assetsPath
   },
   app: {
+    path: 'client/app/',
     extensions: ['.js'],
     buildPattern: 'client/app/!(*.spec).js',
     testPattern: 'client/app/**/*.spec.js',

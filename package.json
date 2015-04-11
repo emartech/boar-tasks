@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "browserify": "9.0.8",
-    "browserify-shim": "3.8.3",
     "co-mocha": "1.1.0",
     "deep-extend": "0.3.3",
     "del": "1.1.1",
@@ -39,7 +38,7 @@
     "gulp-util": "3.0.4",
     "gulp-watch": "4.2.4",
     "karma": "0.12.31",
-    "karma-browserify": "4.0.0",
+    "karma-browserify": "4.1.2",
     "karma-mocha": "0.1.10",
     "karma-phantomjs-launcher": "0.1.4",
     "karma-sinon-chai": "0.3.0",

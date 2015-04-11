@@ -10,6 +10,7 @@ var uglify = require('gulp-uglify');
 var transform = require('vinyl-transform');
 var karma = require('karma').server;
 var through2 = require('through2');
+var vinyl = require('vinyl');
 var concat = require('gulp-concat');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
@@ -58,18 +59,32 @@ module.exports = function (gulp, config) {
     },
 
     buildScripts: function (denyErrors) {
-      var browserified = transform(function (filename) {
-        var b = browserify({
-          entries: [filename],
-          debug: !isProduction,
-          extensions: config.client.app.extensions
+      var bundleModules = function() {
+        var stream = through2.obj(function(file, encoding, done) {
+          var b = browserify({
+            debug: !isProduction,
+            extensions: config.client.app.extensions
+          });
+
+          b.add(file.path);
+          b.bundle(function(err, src) {
+            if (err) done(err);
+
+            stream.push(new vinyl({
+              path: file.path.replace(config.client.app.path, ''),
+              contents: src
+            }));
+
+            done();
+          });
         });
-        return b.bundle();
-      });
+
+        return stream;
+      };
 
       var browserifiedTask = gulp.src([config.client.app.buildPattern])
         .pipe(plumber())
-        .pipe(browserified);
+        .pipe(bundleModules());
 
       if (denyErrors) browserifiedTask = browserifiedTask.on('error', function(err) {
         console.log(err.toString());

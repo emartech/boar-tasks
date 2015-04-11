@@ -16,7 +16,7 @@
     "url": "https://github.com/emartech/boar-tasks/issues"
   },
   "dependencies": {
-    "browserify": "9.0.3",
+    "browserify": "9.0.8",
     "browserify-shim": "3.8.3",
     "co-mocha": "1.1.0",
     "deep-extend": "0.3.3",
@@ -47,10 +47,11 @@
     "mocha": "2.2.4",
     "protractor": "1.8.0",
     "run-sequence": "1.0.2",
-    "through2": "0.6.3",
+    "through2": "0.6.5",
+    "vinyl": "^0.4.6",
     "vinyl-transform": "1.0.0",
     "watchify": "3.1.0",
-    "yargs": "3.7.0"
+    "yargs": "3.7.1"
   },
   "homepage": "https://github.com/emartech/boar-tasks"
 }

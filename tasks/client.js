@@ -33,7 +33,8 @@ module.exports = function (gulp, config) {
         .pipe(gulpif(!isProduction, sourcemaps.init()))
         .pipe(stylus({
           use: config.client.stylesheets.plugins,
-          compress: isProduction
+          compress: isProduction,
+          'include css': !!config.client.stylesheets.includeCss
         }))
         .pipe(gulpif(
           !isProduction,

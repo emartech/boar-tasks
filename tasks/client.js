@@ -34,7 +34,7 @@ module.exports = function (gulp, config) {
         .pipe(stylus({
           use: config.client.stylesheets.plugins,
           compress: isProduction,
-          'include css': !!config.client.stylesheets.includeCss
+          'include css': !!config.client.stylesheets.includeCSS
         }))
         .pipe(gulpif(
           !isProduction,

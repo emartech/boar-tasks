@@ -48,7 +48,8 @@ Config.client = {
     buildPattern: 'client/stylesheets/*.styl',
     watchPattern: 'client/stylesheets/**/*.styl',
     target: Config.build.assetsPath + 'css/',
-    plugins: []
+    plugins: [],
+    includeCSS: true
   },
   vendors: []
 };

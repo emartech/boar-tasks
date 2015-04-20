@@ -3,6 +3,7 @@
 var protractorHelper = require('gulp-protractor');
 var path = require('path');
 var child_process = require('child_process');
+var forever = require('forever');
 
 function getProtractorBinary(binaryName){
     var winExt = /^win/.test(process.platform)? '.cmd' : '';
@@ -12,6 +13,8 @@ function getProtractorBinary(binaryName){
 }
 
 module.exports = function (gulp, config) {
+  var monitor;
+
   return {
 
     test: function(done) {
@@ -22,7 +25,32 @@ module.exports = function (gulp, config) {
 
     updateWebDriver: function (done) {
       protractorHelper.webdriver_update(done);
-    }
+    },
 
+    startServer: function(done) {
+      Object.keys(config.server.environmentVariables).forEach(function(key) {
+        forever.config.set(key, config.server.environmentVariables[key]);
+      });
+
+      monitor = forever.start(config.server.runnable, {});
+      monitor.on('start', function () {
+        forever.startServer(monitor);
+        done();
+      });
+    },
+
+    stopServer: function(done) {
+      if (!monitor) {
+        done();
+        return;
+      }
+
+      monitor.removeAllListeners('exit:code');
+      var ending = forever.stop(monitor.childData.pid);
+      ending.on('stop', function() {
+        monitor = null;
+        done();
+      })
+    }
   };
 };

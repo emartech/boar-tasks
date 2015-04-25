@@ -28,11 +28,7 @@ module.exports = function (gulp, config) {
     },
 
     startServer: function(done) {
-      Object.keys(config.server.environmentVariables).forEach(function(key) {
-        forever.config.set(key, config.server.environmentVariables[key]);
-      });
-
-      monitor = forever.start(config.server.runnable, {});
+      monitor = forever.start(config.server.runnable, {env: config.server.environmentVariables});
       monitor.on('start', function () {
         forever.startServer(monitor);
         done();

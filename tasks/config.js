@@ -6,7 +6,7 @@ Config.build = {
 };
 
 Config.e2e = {
-  configPath: process.cwd() + '/protractor.conf.js',
+  configPath: process.cwd() + '/protractor.conf.js'
 };
 
 Config.server = {
@@ -20,6 +20,10 @@ Config.server = {
     IP: process.env.IP || undefined,
     PORT: process.env.PORT || 9100,
     BASE_URL: process.env.BASE_URL || 'http://localhost:9100'
+  },
+  test: {
+    requires: ['co-mocha'],
+    flags: ['reporter dot', 'harmony', 'colors']
   }
 };
 

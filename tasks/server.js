@@ -26,7 +26,15 @@ module.exports = function (gulp, config) {
     },
 
     test: function (cb) {
-      var command = 'APP_ROOT_PATH=./'+ config.server.path + ' NODE_ENV=test node_modules/boar-tasks/node_modules/mocha/bin/mocha --reporter dot --harmony --colors --require co-mocha "' + config.server.path + '**/*.spec.js"';
+      var requires = config.server.test.requires.map(function(dependency) {
+        return '--require ' + dependency;
+      }).join(' ');
+      var flags = config.server.test.flags.map(function(flag) {
+        return '--' + flag;
+      }).join(' ');
+      var mochaPath = 'node_modules/boar-tasks/node_modules/mocha/bin/mocha';
+
+      var command = 'APP_ROOT_PATH=./'+ config.server.path + ' NODE_ENV=test '+mochaPath+' '+flags+' '+requires+' "' + config.server.path + '**/*.spec.js"';
 
       exec(command, function (err, stdout, stderr) {
         console.log(stdout);

@@ -7,7 +7,6 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
-var transform = require('vinyl-transform');
 var karma = require('karma').server;
 var through2 = require('through2');
 var vinyl = require('vinyl');
@@ -16,6 +15,7 @@ var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var templateCache = require('gulp-angular-templatecache');
 var extReplace = require('gulp-ext-replace');
+var autoprefixer = require('gulp-autoprefixer');
 
 var isProduction = argv.production;
 
@@ -36,6 +36,10 @@ module.exports = function (gulp, config) {
           compress: isProduction,
           'include css': config.client.stylesheets.includeCSS
         }))
+        .pipe(gulpif(
+          config.client.stylesheets.autoprefixer,
+          autoprefixer(config.client.stylesheets.autoprefixer)
+        ))
         .pipe(gulpif(
           !isProduction,
           sourcemaps.write(config.client.externalSourceMap ? '.' : null)

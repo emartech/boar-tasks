@@ -53,7 +53,11 @@ Config.client = {
     watchPattern: 'client/stylesheets/**/*.styl',
     target: Config.build.assetsPath + 'css/',
     plugins: [],
-    includeCSS: true
+    includeCSS: true,
+    autoprefixer: {
+      browsers: ['ie 9', 'ie 10', 'last 2 versions'],
+      cascade: false
+    }
   },
   vendors: []
 };

@@ -18,7 +18,7 @@
   "dependencies": {
     "browserify": "9.0.8",
     "co-mocha": "1.1.0",
-    "deep-extend": "0.3.3",
+    "deep-extend": "0.4.0",
     "del": "1.1.1",
     "forever": "0.14.1",
     "gulp-angular-templatecache": "1.6.0",
@@ -29,7 +29,7 @@
     "gulp-if": "1.2.5",
     "gulp-jade": "1.0.0",
     "gulp-jshint": "1.10.0",
-    "gulp-nodemon": "2.0.2",
+    "gulp-nodemon": "2.0.3",
     "gulp-plumber": "1.0.0",
     "gulp-protractor": "1.0.0",
     "gulp-sourcemaps": "1.5.2",
@@ -44,13 +44,13 @@
     "karma-mocha": "0.1.10",
     "karma-phantomjs-launcher": "0.1.4",
     "karma-sinon-chai": "0.3.0",
-    "lodash": "3.7.0",
+    "lodash": "3.8.0",
     "mocha": "2.2.4",
     "protractor": "2.0.0",
     "run-sequence": "1.1.0",
     "through2": "0.6.5",
     "vinyl": "0.4.6",
-    "watchify": "3.1.2",
+    "watchify": "3.2.1",
     "yargs": "3.8.0"
   },
   "homepage": "https://github.com/emartech/boar-tasks"

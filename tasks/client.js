@@ -9,13 +9,18 @@ var browserify = require('browserify');
 var uglify = require('gulp-uglify');
 var karma = require('karma').server;
 var through2 = require('through2');
-var vinyl = require('vinyl');
 var concat = require('gulp-concat');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var templateCache = require('gulp-angular-templatecache');
-var extReplace = require('gulp-ext-replace');
 var autoprefixer = require('gulp-autoprefixer');
+var glob = require('glob');
+var source = require('vinyl-source-stream');
+var es = require('event-stream');
+var path = require('path');
+var _ = require('lodash');
+var watchify = require('watchify');
+var gutil = require('gulp-util');
 
 var isProduction = argv.production;
 
@@ -64,43 +69,55 @@ module.exports = function (gulp, config) {
     },
 
     buildScripts: function (denyErrors) {
-      var bundleModules = function() {
-        var stream = through2.obj(function(file, encoding, done) {
-          var b = browserify({
-            debug: !isProduction,
-            extensions: config.client.app.extensions
+      var files = glob.sync(config.client.app.buildPattern);
+      var tasks = files.map(function(entry) {
+        var browserifyOptions = {
+          entries: [path.join(process.cwd(), entry)],
+          extensions: config.client.app.extensions,
+          debug: !isProduction,
+          detectGlobals: false
+        };
+
+        if (!isProduction) {
+          _.extend(browserifyOptions, watchify.args);
+        }
+
+        var browserifySetup = browserify(browserifyOptions);
+        if (!isProduction) {
+          browserifySetup = watchify(browserifySetup);
+        }
+
+        function bundleScripts(setup) {
+            return setup.bundle()
+              .pipe(source(path.basename(entry)))
+              .pipe(plumber())
+              .pipe(gulpif(isProduction, uglify({mangle: false})))
+              .pipe(gulp.dest(config.client.app.target));
+        }
+
+        var browserifiedTask = bundleScripts(browserifySetup);
+
+        if (!isProduction) {
+          browserifySetup.on('update', function() {
+            bundleScripts(browserifySetup);
           });
+        }
 
-          b.add(file.path);
-          b.bundle(function(err, src) {
-            if (err) done(err);
-
-            stream.push(new vinyl({
-              path: file.path.replace(config.client.app.path, ''),
-              contents: src
-            }));
-
-            done();
-          });
+        browserifySetup.on('log', function(log) {
+          gutil.log("Browserify successful '" + gutil.colors.cyan(entry) + "'");
+          gutil.log(log);
         });
 
-        return stream;
-      };
+        if (denyErrors) {
+          browserifiedTask.on('error', function(err) {
+            console.log(err.toString());
+            this.emit('end');
+          });
+        }
 
-      var browserifiedTask = gulp.src([config.client.app.buildPattern])
-        .pipe(plumber())
-        .pipe(bundleModules());
-
-      if (denyErrors) browserifiedTask = browserifiedTask.on('error', function(err) {
-        console.log(err.toString());
-        this.emit('end');
+        return browserifiedTask;
       });
-
-      return browserifiedTask
-        .pipe(gulpif(isProduction, uglify({mangle: false})))
-        .pipe(gulpif(isProduction, uglify({mangle: false})))
-        .pipe(extReplace('.js'))
-        .pipe(gulp.dest(config.client.app.target));
+      return es.merge.apply(null, tasks);
     },
 
     buildScriptsDenyErrors: function () {

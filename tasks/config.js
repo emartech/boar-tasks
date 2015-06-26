@@ -24,7 +24,8 @@ Config.server = {
   test: {
     requires: ['co-mocha'],
     flags: ['reporter dot', 'harmony', 'colors']
-  }
+  },
+  codeStylePattern: 'server/**/*.js'
 };
 
 Config.client = {
@@ -46,7 +47,8 @@ Config.client = {
     viewPattern: 'client/app/views/**/*.jade',
     vendorPattern: 'client/vendors.js',
     target: Config.build.assetsPath + 'scripts/',
-    vendors: []
+    vendors: [],
+    codeStylePattern: 'client/app/**/*.js'
   },
   stylesheets: {
     buildPattern: 'client/stylesheets/*.styl',

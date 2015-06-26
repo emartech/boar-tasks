@@ -5,6 +5,7 @@ var gulpif = require('gulp-if');
 var changed = require('gulp-changed');
 var exec = require('child_process').exec;
 var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
 
 module.exports = function (gulp, config) {
   return {
@@ -48,6 +49,11 @@ module.exports = function (gulp, config) {
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
+    },
+
+    codeStyle: function() {
+      return gulp.src(config.server.codeStylePattern)
+        .pipe(jscs());
     }
   };
 };

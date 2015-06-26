@@ -21,6 +21,7 @@ var path = require('path');
 var _ = require('lodash');
 var watchify = require('watchify');
 var gutil = require('gulp-util');
+var jscs = require('gulp-jscs');
 
 var isProduction = argv.production;
 
@@ -159,6 +160,11 @@ module.exports = function (gulp, config) {
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
+    },
+
+    codeStyle: function() {
+      return gulp.src(config.client.app.codeStylePattern)
+        .pipe(jscs());
     }
   };
 };

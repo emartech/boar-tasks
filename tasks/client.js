@@ -68,7 +68,7 @@ module.exports = function (gulp, config) {
         .pipe(gulp.dest(config.client.app.target));
     },
 
-    buildScripts: function (denyErrors) {
+    buildScripts: function (runContinuously) {
       var files = glob.sync(config.client.app.buildPattern);
       var tasks = files.map(function(entry) {
         var browserifyOptions = {
@@ -78,12 +78,12 @@ module.exports = function (gulp, config) {
           detectGlobals: false
         };
 
-        if (!isProduction) {
+        if (runContinuously) {
           _.extend(browserifyOptions, watchify.args);
         }
 
         var browserifySetup = browserify(browserifyOptions);
-        if (!isProduction) {
+        if (runContinuously) {
           browserifySetup = watchify(browserifySetup);
         }
 
@@ -97,7 +97,7 @@ module.exports = function (gulp, config) {
 
         var browserifiedTask = bundleScripts(browserifySetup);
 
-        if (!isProduction) {
+        if (runContinuously) {
           browserifySetup.on('update', function() {
             bundleScripts(browserifySetup);
           });
@@ -108,7 +108,7 @@ module.exports = function (gulp, config) {
           gutil.log(log);
         });
 
-        if (denyErrors) {
+        if (runContinuously) {
           browserifiedTask.on('error', function(err) {
             console.log(err.toString());
             this.emit('end');

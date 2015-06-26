@@ -6,7 +6,7 @@ Config.build = {
 };
 
 Config.e2e = {
-  configPath: process.cwd() + '/protractor.conf.js',
+  configPath: process.cwd() + '/protractor.conf.js'
 };
 
 Config.server = {
@@ -20,6 +20,10 @@ Config.server = {
     IP: process.env.IP || undefined,
     PORT: process.env.PORT || 9100,
     BASE_URL: process.env.BASE_URL || 'http://localhost:9100'
+  },
+  test: {
+    requires: ['co-mocha'],
+    flags: ['reporter dot', 'harmony', 'colors']
   }
 };
 
@@ -49,7 +53,11 @@ Config.client = {
     watchPattern: 'client/stylesheets/**/*.styl',
     target: Config.build.assetsPath + 'css/',
     plugins: [],
-    includeCSS: true
+    includeCSS: true,
+    autoprefixer: {
+      browsers: ['ie 9', 'ie 10', 'last 2 versions'],
+      cascade: false
+    }
   },
   vendors: []
 };

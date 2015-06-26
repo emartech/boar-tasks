@@ -23,6 +23,6 @@ module.exports.getTasks = function(gulp, customConfig) {
     client: client(gulp, finalConfig),
     server: server(gulp, finalConfig),
     e2e: e2e(gulp, finalConfig),
-    build: build(finalConfig),
+    build: build(gulp, finalConfig)
   };
 };

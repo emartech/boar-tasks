@@ -22,7 +22,7 @@ var _ = require('lodash');
 var watchify = require('watchify');
 var gutil = require('gulp-util');
 var jscs = require('gulp-jscs');
-
+var gStreamify = require('gulp-streamify');
 var isProduction = argv.production;
 
 module.exports = function (gulp, config) {
@@ -92,7 +92,7 @@ module.exports = function (gulp, config) {
             return setup.bundle()
               .pipe(source(path.basename(entry)))
               .pipe(plumber())
-              .pipe(gulpif(isProduction, uglify({mangle: false})))
+              .pipe(gulpif(isProduction, gStreamify(uglify({mangle: false}))))
               .pipe(gulp.dest(config.client.app.target));
         }
 
@@ -144,7 +144,7 @@ module.exports = function (gulp, config) {
       return gulp.src(config.client.vendors)
         .pipe(plumber())
         .pipe(concat('vendors.js'))
-        .pipe(gulpif(isProduction, uglify({mangle: false})))
+        .pipe(gulpif(isProduction, gStreamify(uglify({mangle: false}))))
         .pipe(gulp.dest(config.client.app.target));
     },
 

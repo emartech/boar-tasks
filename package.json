@@ -52,6 +52,7 @@
     "protractor": "2.0.0",
     "run-sequence": "1.1.0",
     "through2": "0.6.5",
+    "gulp-streamify": "0.0.5",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.2.2",
     "yargs": "3.8.0"

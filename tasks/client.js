@@ -28,9 +28,20 @@ var isProduction = argv.production;
 module.exports = function (gulp, config) {
 
   return {
-    copyStatic: function () {
-      return gulp.src(config.client.static.copyPattern)
-        .pipe(gulp.dest(config.client.static.target));
+    copyStatic: function() {
+      var staticConfig = config.client.static;
+      if (!_.isArray(staticConfig)) {
+        staticConfig = [staticConfig];
+      }
+
+      _.each(staticConfig, function(config)
+      {
+        gulp
+          .src(config.copyPattern)
+          .pipe(gulp.dest(config.target));
+      });
+
+      return gulp;
     },
 
     buildStylesheets: function () {

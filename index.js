@@ -2,10 +2,11 @@
 
 var extend = require('deep-extend');
 var config = require('./tasks/config');
-var client = require('./tasks/client');
-var server = require('./tasks/server');
-var e2e = require('./tasks/e2e');
-var build = require('./tasks/build');
+var clientTasks = require('./tasks/client');
+var serverTasks = require('./tasks/server');
+var e2eTasks = require('./tasks/e2e');
+var buildTasks = require('./tasks/build');
+var packageTasks = require('./tasks/package');
 var defaultKarmaConfig = require('./karma.conf.js');
 
 
@@ -20,9 +21,10 @@ module.exports.getTasks = function(gulp, customConfig) {
 
   return {
     config: finalConfig,
-    client: client(gulp, finalConfig),
-    server: server(gulp, finalConfig),
-    e2e: e2e(gulp, finalConfig),
-    build: build(gulp, finalConfig)
+    client: clientTasks(gulp, finalConfig),
+    server: serverTasks(gulp, finalConfig),
+    e2e: e2eTasks(gulp, finalConfig),
+    build: buildTasks(gulp, finalConfig),
+    package: packageTasks(gulp, finalConfig)
   };
 };

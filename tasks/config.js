@@ -64,4 +64,11 @@ Config.client = {
   vendors: []
 };
 
+Config.redirector = {
+  url: process.env.REDIRECTOR_URL || undefined,
+  name: process.env.REDIRECTOR_NAME || undefined,
+  target: process.env.REDIRECTOR_TARGET || undefined,
+  apiSecret: process.env.REDIRECTOR_API_SECRET || undefined
+};
+
 module.exports = Config;

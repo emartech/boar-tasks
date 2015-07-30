@@ -6,6 +6,7 @@ var client = require('./tasks/client');
 var server = require('./tasks/server');
 var e2e = require('./tasks/e2e');
 var build = require('./tasks/build');
+var redirector = require('./tasks/redirector');
 var defaultKarmaConfig = require('./karma.conf.js');
 
 
@@ -23,6 +24,7 @@ module.exports.getTasks = function(gulp, customConfig) {
     client: client(gulp, finalConfig),
     server: server(gulp, finalConfig),
     e2e: e2e(gulp, finalConfig),
-    build: build(gulp, finalConfig)
+    build: build(gulp, finalConfig),
+    redirector: redirector(gulp, finalConfig)
   };
 };

@@ -64,6 +64,15 @@ Config.client = {
   vendors: []
 };
 
+Config.s3 = {
+  bucket: 'ems-example-bucket-name',
+  withGzip: false,
+  headers: {
+    'Cache-Control': 'max-age=315360000, no-transform, public',
+    'x-amz-acl': 'bucket-owner-full-control'
+  }
+};
+
 Config.redirector = {
   url: process.env.REDIRECTOR_URL || undefined,
   name: process.env.REDIRECTOR_NAME || undefined,

@@ -1,24 +1,14 @@
 'use strict';
 
 var request = require('superagent');
+var Q = require('q');
 
 module.exports = function(gulp, config) {
-  function handleRedirectorResponse(done, err) {
-    if (err) {
-      console.log('There was an error while updating Emarsys Redirector Service!');
-      console.log(err);
-      throw new Error(err);
-    }
-
-    console.log('Successfully updated Emarsys Redirector Service!');
-    done();
-  }
-
-
   return {
-    save: function(done, revision) {
+    save: function(revision) {
+      var deferred = Q.defer();
       if (!config.redirector.url) {
-        return done();
+        return deferred.resolve();
       }
 
       request
@@ -30,7 +20,18 @@ module.exports = function(gulp, config) {
         })
         .set('Accept', 'application/json')
         .set('x-auth', config.redirector.apiSecret)
-        .end(handleRedirectorResponse.bind(this, done));
+        .end(function(err) {
+          if (err) {
+            console.log('There was an error while updating Emarsys Redirector Service!');
+            console.log(err);
+            throw new Error(err);
+          }
+
+          console.log('Successfully updated Emarsys Redirector Service!');
+          deferred.resolve();
+        });
+
+      return deferred;
     }
   };
 };

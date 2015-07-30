@@ -55,6 +55,7 @@
     "lodash": "3.8.0",
     "mocha": "2.2.4",
     "protractor": "2.0.0",
+    "q": "^1.4.1",
     "run-sequence": "1.1.0",
     "superagent": "^1.2.0",
     "through2": "0.6.5",

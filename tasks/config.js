@@ -69,6 +69,7 @@ Config.client = {
 };
 
 Config.s3 = {
+  copyPattern: 'dist/**/*',
   bucket: 'ems-example-bucket-name',
   withGzip: false,
   headers: {

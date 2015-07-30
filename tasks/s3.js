@@ -17,7 +17,7 @@ module.exports = function(gulp, config)
         logger: argv.production ? null : console
       });
 
-      var stream = gulp.src('./dist/**/*')
+      var stream = gulp.src(config.s3.copyPattern)
         .pipe(rename(function(path)
         {
           path.dirname = '/' + revision + '/' + path.dirname;

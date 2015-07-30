@@ -16,7 +16,7 @@ module.exports = function(gulp, config) {
 
 
   return {
-    save: function(revision, done) {
+    save: function(done, revision) {
       if (!config.redirector.url) {
         return done();
       }

@@ -18,7 +18,7 @@ var glob = require('glob');
 var source = require('vinyl-source-stream');
 var es = require('event-stream');
 var path = require('path');
-var _ = require('lodash');
+var extend = require('deep-extend');
 var watchify = require('watchify');
 var gutil = require('gulp-util');
 var jscs = require('gulp-jscs');
@@ -91,7 +91,7 @@ module.exports = function (gulp, config) {
         };
 
         if (runContinuously) {
-          _.extend(browserifyOptions, watchify.args);
+          extend(browserifyOptions, watchify.args);
         }
 
         var browserifySetup = browserify(browserifyOptions);

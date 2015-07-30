@@ -1,5 +1,9 @@
 var Config = {};
 
+Config.package = {
+  path: process.cwd()
+};
+
 Config.build = {
   distPath: 'dist/',
   assetsPath: 'dist/assets/'

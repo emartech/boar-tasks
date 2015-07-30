@@ -1,6 +1,6 @@
 {
   "name": "boar-tasks",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "gulp-concat": "2.5.2",
     "gulp-exec": "2.1.1",
     "gulp-if": "1.2.5",
+    "gulp-install": "^0.4.0",
     "gulp-jade": "1.0.0",
     "gulp-jscs": "1.6.0",
     "gulp-jshint": "1.10.0",

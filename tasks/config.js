@@ -1,3 +1,5 @@
+var argv = require('yargs').argv;
+
 var Config = {};
 
 Config.package = {
@@ -70,7 +72,7 @@ Config.client = {
 
 Config.s3 = {
   copyPattern: 'dist/**/*',
-  bucket: 'ems-example-bucket-name',
+  bucket: argv.s3Bucket || process.env.S3_BUCKET,
   withGzip: false,
   headers: {
     'Cache-Control': 'max-age=315360000, no-transform, public',
@@ -79,10 +81,10 @@ Config.s3 = {
 };
 
 Config.redirector = {
-  url: process.env.REDIRECTOR_URL || undefined,
-  name: process.env.REDIRECTOR_NAME || undefined,
-  target: process.env.REDIRECTOR_TARGET || undefined,
-  apiSecret: process.env.REDIRECTOR_API_SECRET || undefined
+  url: argv.redirectorUrl || process.env.REDIRECTOR_URL,
+  name: argv.redirectorName || process.env.REDIRECTOR_NAME,
+  target: argv.redirectorTarget || process.env.REDIRECTOR_TARGET,
+  apiSecret: argv.redirectorApiSecret || process.env.REDIRECTOR_API_SECRET
 };
 
 module.exports = Config;

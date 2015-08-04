@@ -9,6 +9,7 @@ module.exports = function(gulp, config) {
     },
 
     install: function() {
+      console.log('Installing NPM packages');
       install();
     }
   };

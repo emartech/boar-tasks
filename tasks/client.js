@@ -7,7 +7,7 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
-var karma = require('karma').server;
+var karma = require('karma').Server;
 var through2 = require('through2');
 var concat = require('gulp-concat');
 var jade = require('gulp-jade');
@@ -160,10 +160,11 @@ module.exports = function (gulp, config) {
     },
 
     test: function (done) {
-      karma.start({
+      var server = new karma({
         configFile: config.client.testConfigPath,
         singleRun: true
       }, done);
+      server.start();
     },
 
     jshint: function() {

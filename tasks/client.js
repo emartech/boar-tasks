@@ -24,6 +24,7 @@ var gutil = require('gulp-util');
 var jscs = require('gulp-jscs');
 var gStreamify = require('gulp-streamify');
 var isProduction = argv.production;
+var notify = require('gulp-notify');
 
 module.exports = function (gulp, config) {
 
@@ -46,7 +47,12 @@ module.exports = function (gulp, config) {
 
     buildStylesheets: function () {
       return gulp.src(config.client.stylesheets.buildPattern)
-        .pipe(plumber())
+        .pipe(plumber({
+          errorHandler: notify.onError({
+            title: "<%= error.name %>",
+            message: "<%= error.message %>"
+          })
+        }))
         .pipe(gulpif(!isProduction, sourcemaps.init()))
         .pipe(stylus({
           use: config.client.stylesheets.plugins,

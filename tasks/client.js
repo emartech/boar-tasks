@@ -2,6 +2,7 @@
 
 var gulpif = require('gulp-if');
 var stylus = require('gulp-stylus');
+var stylint = require('gulp-stylint');
 var argv = require('yargs').argv;
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
@@ -177,6 +178,11 @@ module.exports = function (gulp, config) {
     codeStyle: function() {
       return gulp.src(config.client.app.codeStylePattern)
         .pipe(jscs());
+    },
+
+    stylesheetCodeStyle: function() {
+      return gulp.src(config.client.stylesheets.codeStyle.pattern)
+        .pipe(stylint(config.client.stylesheets.codeStyle.config));
     }
   };
 };

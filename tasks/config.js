@@ -65,6 +65,21 @@ Config.client = {
     autoprefixer: {
       browsers: ['ie 9', 'ie 10', 'last 2 versions'],
       cascade: false
+    },
+    codeStyle: {
+      pattern: 'client/stylesheets/**/*.styl',
+      config: {
+        rules: {
+          depthLimit: 3,
+          efficient: false,
+          indentPref: 2,
+          namingConvention: 'lowercase-dash',
+          noImportant: true,
+          quotePref: 'double',
+          sortOrder: 'alphabetical',
+          valid: false
+        }
+      }
     }
   },
   vendors: []

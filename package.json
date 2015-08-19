@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "release-patch": "npm version patch -m 'chore(package): update version to %s'",
+    "release-minor": "npm version minor -m 'chore(package): update version to %s'",
+    "release-major": "npm version major -m 'chore(package): update version to %s'"
   },
   "repository": {
     "type": "git",

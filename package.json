@@ -37,6 +37,7 @@
     "gulp-jshint": "1.11.2",
     "gulp-nodemon": "2.0.3",
     "gulp-plumber": "1.0.1",
+    "gulp-notify": "^2.2.0",
     "gulp-prompt": "0.1.2",
     "gulp-protractor": "1.0.0",
     "gulp-rename": "^1.2.2",

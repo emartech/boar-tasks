@@ -36,11 +36,25 @@ module.exports = function (gulp, config) {
         staticConfig = [staticConfig];
       }
 
-      _.each(staticConfig, function(config)
-      {
-        gulp
-          .src(config.copyPattern)
-          .pipe(gulp.dest(config.target));
+      _.each(staticConfig, function(config) {
+        var task = gulp.src(config.copyPattern);
+
+        switch (config.preProcess) {
+          case 'browserify':
+            task
+              .pipe(through2.obj(function(file, enc, next) {
+                browserify(file.path)
+                  .bundle()
+                  .pipe(source(path.basename(file.path)))
+                  .pipe(gulpif(isProduction, gStreamify(uglify({mangle: false}))))
+                  .pipe(gulp.dest(config.target));
+              }));
+            break;
+
+          default:
+            task.pipe(gulp.dest(config.target));
+        }
+
       });
 
       return gulp;

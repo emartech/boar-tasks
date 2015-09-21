@@ -60,14 +60,14 @@ module.exports = function (gulp, config) {
       return gulp;
     },
 
-    buildStylesheets: function () {
+    buildStylesheets: function (runContinuously) {
       return gulp.src(config.client.stylesheets.buildPattern)
-        .pipe(plumber({
+        .pipe(gulpif(runContinuously, plumber({
           errorHandler: notify.onError({
             title: "<%= error.name %>",
             message: "<%= error.message %>"
           })
-        }))
+        })))
         .pipe(gulpif(!isProduction, sourcemaps.init()))
         .pipe(stylus({
           use: config.client.stylesheets.plugins,
@@ -84,6 +84,10 @@ module.exports = function (gulp, config) {
         ))
         .pipe(plumber.stop())
         .pipe(gulp.dest(config.client.stylesheets.target));
+    },
+
+    buildStylesheetsDenyErrors: function () {
+      return this.buildStylesheets(true);
     },
 
     buildViews: function () {

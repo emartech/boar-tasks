@@ -4,6 +4,8 @@ var awsPublish  = require('gulp-awspublish');
 var rename      = require('gulp-rename');
 var parallelize = require('concurrent-transform');
 var argv        = require('yargs').argv;
+var clone       = require('gulp-clone');
+var es          = require('event-stream');
 
 module.exports = function(gulp, config)
 {
@@ -22,16 +24,20 @@ module.exports = function(gulp, config)
         {
           path.dirname = '/' + revision + '/' + path.dirname;
           return path;
-        }))
-        .pipe(parallelize(publisher.publish(config.s3.headers), 10));
+        }));
 
       if (config.s3.withGzip)
       {
-        stream = stream.pipe(awsPublish.gzip({ext: '.gz'}))
-          .pipe(parallelize(publisher.publish(config.s3.headers), 10))
+        var gzipStream = stream
+          .pipe(clone())
+          .pipe(awsPublish.gzip({ext: '.gz'}));
+
+        stream = es.merge(stream, gzipStream);
       }
 
-      return stream.pipe(awsPublish.reporter());
+      return stream
+        .pipe(parallelize(publisher.publish(config.s3.headers), 10))
+        .pipe(awsPublish.reporter());
     }
   };
 };

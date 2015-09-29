@@ -102,4 +102,11 @@ Config.redirector = {
   apiSecret: argv.redirectorApiSecret || process.env.REDIRECTOR_API_SECRET
 };
 
+Config.revision = {
+  /**
+   * Generating a revision can be a type of 'timestamp', 'package' or can be set by --revision argument.
+   */
+  type: 'timestamp'
+};
+
 module.exports = Config;

@@ -9,6 +9,7 @@ var buildTasks = require('./tasks/build');
 var packageTasks = require('./tasks/package');
 var s3Tasks = require('./tasks/s3');
 var redirectorTasks = require('./tasks/redirector');
+var revisionTasks = require('./tasks/revision');
 
 var defaultKarmaConfig = require('./karma.conf.js');
 
@@ -29,6 +30,7 @@ module.exports.getTasks = function(gulp, customConfig) {
     e2e: e2eTasks(gulp, finalConfig),
     build: buildTasks(gulp, finalConfig),
     package: packageTasks(gulp, finalConfig),
+    revision: revisionTasks(gulp, finalConfig),
     s3: s3Tasks(gulp, finalConfig),
     redirector: redirectorTasks(gulp, finalConfig)
   };

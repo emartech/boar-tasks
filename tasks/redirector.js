@@ -2,10 +2,15 @@
 
 var request = require('superagent');
 var Q = require('q');
+var Revision = require('../lib/revision');
 
 module.exports = function(gulp, config) {
   return {
     save: function(revision) {
+      if (!revision) {
+        revision = Revision.get(config.revision.type);
+      }
+
       var deferred = Q.defer();
       if (!config.redirector.url) {
         return deferred.resolve();

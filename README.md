@@ -11,15 +11,29 @@ var tasks = require('boar-tasks').getTasks(gulp, config);
 ```
 
 ## Publishing
-
 Deploying to S3 and registering files in Emarsys Redirector service.
 
 ```javascript
-var argv = require('yargs').argv;
-
-var revision;
 gulp.task('publish', ['publish-s3', 'publish-redirector']);
-gulp.task('revision', function() { revision = argv.revision || tasks.revision.get(); });
-gulp.task('publish-s3', ['revision'], function() { return tasks.s3.publish(revision); });
-gulp.task('publish-redirector', ['revision'], function() { return tasks.redirector.save(revision); });
+gulp.task('publish-s3', function() { return tasks.s3.publish(); });
+gulp.task('publish-redirector', function() { return tasks.redirector.save(); });
+```
+
+### Revision customization
+By default `Boar-tasks` will use a timestamp based revision on the `s3.publish` and the `redirector.save` tasks. If you prefer to use the version number as revision from the `package.json` then change the `revision.type` property of the task configuration to `package`.   
+
+If you would like to setup the revision by yourself you can define it in two different ways: 
+ 
+#### 1. Use --revision argument
+```bash
+gulp publish --revision myCustomRevision
+```
+
+#### 2. Directly add revisions to the tasks 
+```javascript
+var revision = 'myCustomRevision';
+
+gulp.task('publish', ['publish-s3', 'publish-redirector']);
+gulp.task('publish-s3', function() { return tasks.s3.publish(revision); });
+gulp.task('publish-redirector', function() { return tasks.redirector.save(revision); });
 ```

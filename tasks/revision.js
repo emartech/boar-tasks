@@ -1,18 +1,12 @@
 'use strict';
 
-var argv = require('yargs').argv;
-
 module.exports = function(gulp, config)
 {
+  var revision;
+
   return {
-    generate: function()
+    get: function()
     {
-      if (process.env.REVISION) {
-        return;
-      }
-
-      var revision = argv.revision || null;
-
       if (!revision) {
         switch (config.revision.type) {
           case 'package':
@@ -25,7 +19,7 @@ module.exports = function(gulp, config)
         }
       }
 
-      process.env.REVISION = revision;
+      return revision;
     }
   };
 };

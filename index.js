@@ -2,6 +2,8 @@
 
 var extend = require('deep-extend');
 var config = require('./tasks/config');
+var revision = require('./lib/revision');
+
 var clientTasks = require('./tasks/client');
 var serverTasks = require('./tasks/server');
 var e2eTasks = require('./tasks/e2e');
@@ -32,4 +34,8 @@ module.exports.getTasks = function(gulp, customConfig) {
     s3: s3Tasks(gulp, finalConfig),
     redirector: redirectorTasks(gulp, finalConfig)
   };
+};
+
+module.exports.lib = {
+  revision: revision
 };

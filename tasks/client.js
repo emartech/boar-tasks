@@ -74,6 +74,12 @@ module.exports = function (gulp, config) {
           compress: isProduction,
           'include css': config.client.stylesheets.includeCSS
         }))
+        .on('error', function() {
+          if (!runContinuously) {
+            console.log('Error happened on compiling Stylus! Aborting...');
+            process.exit(1);
+          }
+        })
         .pipe(gulpif(
           config.client.stylesheets.autoprefixer,
           autoprefixer(config.client.stylesheets.autoprefixer)

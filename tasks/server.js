@@ -6,6 +6,7 @@ var changed = require('gulp-changed');
 var exec = require('child_process').exec;
 var jshint = require('gulp-jshint');
 var jscs = require('gulp-jscs');
+var _ = require('lodash');
 
 module.exports = function (gulp, config) {
   return {
@@ -34,10 +35,10 @@ module.exports = function (gulp, config) {
         return '--' + flag;
       }).join(' ');
       var mochaPath = 'node_modules/boar-tasks/node_modules/mocha/bin/mocha';
+      var env = _.extend({}, process.env, config.server.test.environmentVariables);
+      var command = mochaPath+' '+flags+' '+requires+' "' + config.server.path + '**/*.spec.js"';
 
-      var command = 'APP_ROOT_PATH=./'+ config.server.path + ' NODE_ENV=test '+mochaPath+' '+flags+' '+requires+' "' + config.server.path + '**/*.spec.js"';
-
-      exec(command, function (err, stdout, stderr) {
+      exec(command, { env: env }, function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);

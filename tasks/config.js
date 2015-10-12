@@ -29,7 +29,11 @@ Config.server = {
   },
   test: {
     requires: ['co-mocha'],
-    flags: ['reporter dot', 'harmony', 'colors']
+    flags: ['reporter dot', 'harmony', 'colors'],
+    environmentVariables: {
+      NODE_ENV: process.env.NODE_ENV || 'test',
+      APP_ROOT_PATH: process.cwd() + '/' + Config.build.distPath
+    }
   },
   codeStylePattern: 'server/**/*.js'
 };

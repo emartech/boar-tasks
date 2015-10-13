@@ -26,6 +26,9 @@ var jscs = require('gulp-jscs');
 var gStreamify = require('gulp-streamify');
 var isProduction = argv.production;
 var notify = require('gulp-notify');
+var webpack = require('webpack');
+var configToWebpack = require('../lib/config-to-webpack');
+var notifier = require('node-notifier');
 
 module.exports = function (gulp, config) {
 
@@ -111,60 +114,55 @@ module.exports = function (gulp, config) {
         .pipe(gulp.dest(config.client.app.target));
     },
 
-    buildScripts: function (runContinuously) {
-      var files = glob.sync(config.client.app.buildPattern);
-      var tasks = files.map(function(entry) {
-        var browserifyOptions = {
-          entries: [path.join(process.cwd(), entry)],
-          extensions: config.client.app.extensions,
-          debug: !isProduction,
-          detectGlobals: false
-        };
+    buildScripts: function (cb, runContinuously) {
+      var webpackConfig = configToWebpack(config);
+      var compiler = webpack(webpackConfig);
+      if (isProduction) {
+        webpackConfig.plugins = webpackConfig.plugins.concat(
+          new webpack.optimize.DedupePlugin(),
+          new webpack.optimize.UglifyJsPlugin()
+        );
+      }
 
-        if (runContinuously) {
-          _.extend(browserifyOptions, watchify.args);
-        }
-
-        var browserifySetup = browserify(browserifyOptions);
-        if (runContinuously) {
-          browserifySetup = watchify(browserifySetup);
-        }
-
-        function bundleScripts(setup) {
-            return setup.bundle()
-              .pipe(source(path.basename(entry)))
-              .pipe(plumber())
-              .pipe(gulpif(isProduction, gStreamify(uglify({mangle: false}))))
-              .pipe(gulp.dest(config.client.app.target));
-        }
-
-        var browserifiedTask = bundleScripts(browserifySetup);
-
-        if (runContinuously) {
-          browserifySetup.on('update', function() {
-            bundleScripts(browserifySetup);
-          });
-        }
-
-        browserifySetup.on('log', function(log) {
-          gutil.log("Browserify successful '" + gutil.colors.cyan(entry) + "'");
-          gutil.log(log);
+      if (!runContinuously) {
+        compiler.run(function(err, stats) {
+          if(err) throw new gutil.PluginError("webpack:build", err);
+          gutil.log("[webpack:build]", stats.toString({ colors: true }));
+          cb();
         });
+      } else {
+        compiler.watch({ aggregateTimeout: 300, poll: true }, function(err, stats) {
+          if (err) {
+            console.log('error', err);
+            throw new gutil.PluginError("webpack:build", err);
+          }
 
-        if (runContinuously) {
-          browserifiedTask.on('error', function(err) {
-            console.log(err.toString());
-            this.emit('end');
-          });
-        }
+          if (stats.compilation.errors.length > 0) {
+            stats.compilation.errors.forEach(function(error) {
+              console.log(`[BOAR TASKS ERROR] ${error.module.error}\n\n`);
+            });
 
-        return browserifiedTask;
-      });
-      return es.merge.apply(null, tasks);
+            notifier.notify({
+              'title': `${stats.compilation.errors.length} Boar tasks error`,
+              'message': stats.compilation.errors[0].module.resource.substr(-75),
+              'icon': path.join(__dirname, "boar.png"),
+              time: 8000
+            });
+          } else {
+            notifier.notify({
+              'title': 'Boar tasks',
+              'message': 'Client recompiled',
+              'icon': path.join(__dirname, "boar.png")
+            });
+          }
+
+          gutil.log("[webpack:build]", "recompiled");
+        });
+      }
     },
 
-    buildScriptsDenyErrors: function () {
-      return this.buildScripts(true);
+    buildScriptsDenyErrors: function (cb) {
+      return this.buildScripts(cb, true);
     },
 
     buildVendors: function () {

@@ -54,7 +54,8 @@ Config.client = {
     vendorPattern: 'client/vendors.js',
     target: Config.build.assetsPath + 'scripts/',
     vendors: [],
-    codeStylePattern: 'client/app/**/*.js'
+    codeStylePattern: 'client/app/**/*.js',
+    loaders: []
   },
   stylesheets: {
     buildPattern: 'client/stylesheets/*.styl',

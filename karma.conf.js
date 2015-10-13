@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash');
 
 module.exports = function(config) {
@@ -8,26 +10,30 @@ module.exports = function(config) {
     preprocessors: {}
   };
 
-  configHash.preprocessors[config.client.app.testPattern] = ['browserify'];
+  configHash.preprocessors[config.client.app.testPattern] = ['webpack'];
+  configHash.webpack = {
+    module: {
+      loaders: config.client.app.loaders
+    }
+  };
+
+  configHash.plugins = [
+    require('karma-webpack'),
+    require('karma-mocha'),
+    require('karma-sinon'),
+    require('karma-sinon-chai'),
+    require('karma-phantomjs-launcher')
+  ];
 
   return _.extend({}, configHash, {
-
     basePath: '',
-
-    frameworks: ['mocha', 'browserify', 'sinon-chai'],
-
+    frameworks: ['mocha', 'sinon', 'sinon-chai'],
     exclude: [],
-
     reporters: ['progress'],
-
     port: 9876,
-
     colors: true,
-
     autoWatch: false,
-
     browsers: ['PhantomJS'],
-
     singleRun: true
   });
 

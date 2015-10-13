@@ -6,7 +6,6 @@ var stylint = require('gulp-stylint');
 var argv = require('yargs').argv;
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
-var browserify = require('browserify');
 var uglify = require('gulp-uglify');
 var karma = require('karma').Server;
 var through2 = require('through2');

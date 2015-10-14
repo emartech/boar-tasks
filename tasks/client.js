@@ -28,6 +28,7 @@ var notify = require('gulp-notify');
 var webpack = require('webpack');
 var configToWebpack = require('../lib/config-to-webpack');
 var notifier = require('node-notifier');
+var browserify = require('browserify');
 
 module.exports = function (gulp, config) {
 

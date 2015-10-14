@@ -148,12 +148,6 @@ module.exports = function (gulp, config) {
                 'icon': path.join(__dirname, "boar.png"),
                 time: 8000
               });
-            } else {
-              notifier.notify({
-                'title': 'Boar tasks',
-                'message': 'Client recompiled',
-                'icon': path.join(__dirname, "boar.png")
-              });
             }
 
             gutil.log("[webpack:build]", "recompiled");

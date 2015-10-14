@@ -8,6 +8,9 @@ var jshint = require('gulp-jshint');
 var jscs = require('gulp-jscs');
 var _ = require('lodash');
 
+var notifier = require('node-notifier');
+var path = require('path');
+
 module.exports = function (gulp, config) {
   return {
     start: function () {
@@ -18,6 +21,12 @@ module.exports = function (gulp, config) {
         delay: 1,
         env: config.server.environmentVariables,
         nodeArgs: ['--harmony']
+      }).on('restart', function() {
+        notifier.notify({
+          'title': 'Boar tasks',
+          'message': 'Server restarted',
+          'icon': path.join(__dirname, "boar.png")
+        });
       });
     },
 

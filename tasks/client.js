@@ -117,27 +117,25 @@ module.exports = function (gulp, config) {
     },
 
     buildScripts: function (cb, runContinuously) {
-      configToWebpack(config, function(webpackConfig) {
-        var compiler = new WebpackCompiler(webpackConfig);
-        if (isProduction) compiler.addProductionPlugins();
-        compiler.on('success', function() {
-          gutil.log("webpack:build");
-          if (!runContinuously) cb();
-        });
-        compiler.on('error', function(errors) {
-          notifier.notify({
-            'title': errors.length + ' Boar tasks error',
-            'message': errors[0].error.substr(-75),
-            'icon': icon,
-            time: 8000
-          });
-          errors.forEach(function(error) {
-            console.log(`[BOAR TASKS ERROR] ${error.error}\n\n`);
-          });
-          throw new gutil.PluginError("webpack:build", errors);
-        });
-        runContinuously ? compiler.buildContinuously() : compiler.buildOnce();
+      var compiler = new WebpackCompiler(configToWebpack(config));
+      if (isProduction) compiler.addProductionPlugins();
+      compiler.on('success', function() {
+        gutil.log("webpack:build");
+        if (!runContinuously) cb();
       });
+      compiler.on('error', function(errors) {
+        notifier.notify({
+          'title': errors.length + ' Boar tasks error',
+          'message': errors[0].toString().substr(-75),
+          'icon': icon,
+          'time': 8000
+        });
+        errors.forEach(function(error) {
+          console.log(`[BOAR TASKS ERROR] ${error}\n\n`);
+        });
+        throw new gutil.PluginError("webpack:build", errors[0]);
+      });
+      runContinuously ? compiler.buildContinuously() : compiler.buildOnce();
     },
 
     buildScriptsDenyErrors: function (cb) {

@@ -29,6 +29,8 @@ var webpack = require('webpack');
 var configToWebpack = require('../lib/config-to-webpack');
 var notifier = require('node-notifier');
 var browserify = require('browserify');
+var WebpackCompiler = require('../lib/webpack-compiler');
+var icon = path.join(__dirname, "boar.png");
 
 module.exports = function (gulp, config) {
 
@@ -115,52 +117,27 @@ module.exports = function (gulp, config) {
     },
 
     buildScripts: function (cb, runContinuously) {
-        configToWebpack(config, function(webpackConfig) {
-        var compiler = webpack(webpackConfig);
-        if (isProduction) {
-          webpackConfig.plugins = webpackConfig.plugins.concat(
-            new webpack.optimize.DedupePlugin(),
-            new webpack.optimize.UglifyJsPlugin()
-          );
-        }
-
-        if (!runContinuously) {
-          compiler.run(function(err, stats) {
-            if(err) throw new gutil.PluginError("webpack:build", err);
-            gutil.log("[webpack:build]", stats.toString({ colors: true }));
-            cb();
+      configToWebpack(config, function(webpackConfig) {
+        var compiler = new WebpackCompiler(webpackConfig);
+        if (isProduction) compiler.addProductionPlugins();
+        compiler.on('success', function() {
+          gutil.log("webpack:build");
+          if (!runContinuously) cb();
+        });
+        compiler.on('error', function(errors) {
+          notifier.notify({
+            'title': errors.length + ' Boar tasks error',
+            'message': errors[0].error.substr(-75),
+            'icon': icon,
+            time: 8000
           });
-        } else {
-          compiler.watch({ aggregateTimeout: 300, poll: true }, function(err, stats) {
-            if (err) {
-              console.log('error', err);
-              throw new gutil.PluginError("webpack:build", err);
-            }
-
-            if (stats.compilation.errors.length > 0) {
-              stats.compilation.errors.forEach(function(error) {
-                console.log(`[BOAR TASKS ERROR] ${error.module.error}\n\n`);
-              });
-
-              notifier.notify({
-                'title': `${stats.compilation.errors.length} Boar tasks error`,
-                'message': stats.compilation.errors[0].module.resource.substr(-75),
-                'icon': path.join(__dirname, "boar.png"),
-                time: 8000
-              });
-            } else {
-              notifier.notify({
-                'title': 'Boar tasks',
-                'message': 'Client recompiled',
-                'icon': path.join(__dirname, "boar.png")
-              });
-            }
-
-            gutil.log("[webpack:build]", "recompiled");
+          errors.forEach(function(error) {
+            console.log(`[BOAR TASKS ERROR] ${error.error}\n\n`);
           });
-        }
+          throw new gutil.PluginError("webpack:build", errors);
+        });
+        runContinuously ? compiler.buildContinuously() : compiler.buildOnce();
       });
-
     },
 
     buildScriptsDenyErrors: function (cb) {

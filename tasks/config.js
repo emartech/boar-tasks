@@ -64,7 +64,7 @@ Config.client = {
   stylesheets: {
     buildPattern: 'client/stylesheets/*.styl',
     watchPattern: 'client/stylesheets/**/*',
-    target: Config.build.assetsPath + 'css/',
+    target: Config.build.assetsPath + 'stylesheets/',
     plugins: [],
     includeCSS: true,
     autoprefixer: {

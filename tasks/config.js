@@ -53,7 +53,7 @@ Config.client = {
     buildPattern: 'client/app/!(*.spec).js',
     testPattern: 'client/app/**/*.spec.js',
     testModules: [],
-    watchPattern: 'client/app/**/*.js',
+    watchPattern: 'client/app/**/*',
     viewPattern: 'client/app/views/**/*.jade',
     vendorPattern: 'client/vendors.js',
     target: Config.build.assetsPath + 'scripts/',
@@ -63,7 +63,7 @@ Config.client = {
   },
   stylesheets: {
     buildPattern: 'client/stylesheets/*.styl',
-    watchPattern: 'client/stylesheets/**/*.styl',
+    watchPattern: 'client/stylesheets/**/*',
     target: Config.build.assetsPath + 'css/',
     plugins: [],
     includeCSS: true,

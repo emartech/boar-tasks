@@ -4,8 +4,9 @@ var _ = require('lodash');
 
 module.exports = function(config) {
   var configHash = {
-    files: config.client.vendors
+    files: []
       .concat(config.client.app.testModules)
+      .concat(config.client.vendors)
       .concat([config.client.app.testPattern]),
     preprocessors: {}
   };

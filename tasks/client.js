@@ -174,7 +174,7 @@ module.exports = function (gulp, config) {
     },
 
     jshint: function() {
-      return gulp.src(config.client.app.watchPattern)
+      return gulp.src(config.client.app.codeStylePattern)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));

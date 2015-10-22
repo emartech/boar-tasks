@@ -148,7 +148,6 @@ module.exports = function (gulp, config) {
         .pipe(through2.obj(function (file, enc, next) {
           browserify(file.path)
             .transform('browserify-shim')
-            .require(config.client.app.vendors)
             .bundle(function (err, res) {
               file.contents = res;
               next(null, file);

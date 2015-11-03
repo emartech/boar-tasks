@@ -11,7 +11,6 @@ var karma = require('karma').Server;
 var through2 = require('through2');
 var concat = require('gulp-concat');
 var jade = require('gulp-jade');
-var jshint = require('gulp-jshint');
 var templateCache = require('gulp-angular-templatecache');
 var autoprefixer = require('gulp-autoprefixer');
 var glob = require('glob');
@@ -21,7 +20,6 @@ var path = require('path');
 var _ = require('lodash');
 var watchify = require('watchify');
 var gutil = require('gulp-util');
-var jscs = require('gulp-jscs');
 var gStreamify = require('gulp-streamify');
 var isProduction = argv.production;
 var notify = require('gulp-notify');
@@ -31,6 +29,7 @@ var notifier = require('node-notifier');
 var browserify = require('browserify');
 var WebpackCompiler = require('../lib/webpack-compiler');
 var icon = path.join(__dirname, "boar.png");
+var eslint = require('gulp-eslint');
 var connect = require('gulp-connect');
 
 module.exports = function (gulp, config) {
@@ -149,7 +148,6 @@ module.exports = function (gulp, config) {
         .pipe(through2.obj(function (file, enc, next) {
           browserify(file.path)
             .transform('browserify-shim')
-            .require(config.client.app.vendors)
             .bundle(function (err, res) {
               file.contents = res;
               next(null, file);
@@ -173,17 +171,13 @@ module.exports = function (gulp, config) {
       }, done);
       server.start();
     },
-
-    jshint: function() {
-      return gulp.src(config.client.app.codeStylePattern)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
-    },
-
+    
     codeStyle: function() {
       return gulp.src(config.client.app.codeStylePattern)
-        .pipe(jscs());
+        .pipe(eslint({
+          useEslintrc: true
+        }))
+        .pipe(eslint.format());
     },
 
     stylesheetCodeStyle: function() {
@@ -193,7 +187,7 @@ module.exports = function (gulp, config) {
 
     staticServer: function() {
       connect.server({
-        root: config.build.distPath
+        root: [config.build.distPath, './client']
       });
     },
 

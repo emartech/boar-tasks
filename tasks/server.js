@@ -4,9 +4,8 @@ var nodemon = require('gulp-nodemon');
 var gulpif = require('gulp-if');
 var changed = require('gulp-changed');
 var exec = require('child_process').exec;
-var jshint = require('gulp-jshint');
-var jscs = require('gulp-jscs');
 var _ = require('lodash');
+var eslint = require('gulp-eslint');
 
 var notifier = require('node-notifier');
 var path = require('path');
@@ -69,16 +68,12 @@ module.exports = function (gulp, config) {
       });
     },
 
-    jshint: function() {
-      return gulp.src(config.server.watchPattern)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
-    },
-
     codeStyle: function() {
       return gulp.src(config.server.codeStylePattern)
-        .pipe(jscs());
+        .pipe(eslint({
+          useEslintrc: true
+        }))
+        .pipe(eslint.format());
     }
   };
 };

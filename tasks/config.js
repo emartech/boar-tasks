@@ -93,7 +93,7 @@ Config.client = {
 Config.s3 = {
   copyPattern: 'dist/**/*',
   bucket: argv.s3Bucket || process.env.S3_BUCKET,
-  withGzip: false,
+  withGzip: true,
   headers: {
     'Cache-Control': 'max-age=315360000, no-transform, public',
     'x-amz-acl': 'bucket-owner-full-control'

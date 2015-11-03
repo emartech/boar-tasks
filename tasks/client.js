@@ -31,6 +31,7 @@ var notifier = require('node-notifier');
 var browserify = require('browserify');
 var WebpackCompiler = require('../lib/webpack-compiler');
 var icon = path.join(__dirname, "boar.png");
+var connect = require('gulp-connect');
 
 module.exports = function (gulp, config) {
 
@@ -188,6 +189,16 @@ module.exports = function (gulp, config) {
     stylesheetCodeStyle: function() {
       return gulp.src(config.client.stylesheets.codeStyle.pattern)
         .pipe(stylint(config.client.stylesheets.codeStyle.config));
+    },
+
+    staticServer: function() {
+      connect.server({
+        root: config.build.distPath
+      });
+    },
+
+    reloadStaticServer: function() {
+      return connect.reload();
     }
   };
 };

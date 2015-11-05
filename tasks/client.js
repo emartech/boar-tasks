@@ -133,7 +133,9 @@ module.exports = function (gulp, config) {
         errors.forEach(function(error) {
           console.log(`[BOAR TASKS ERROR] ${error}\n\n`);
         });
-        throw new gutil.PluginError("webpack:build", errors[0]);
+        if (!runContinuously) {
+          throw new gutil.PluginError("webpack:build", errors[0]);
+        }
       });
       runContinuously ? compiler.buildContinuously() : compiler.buildOnce();
     },

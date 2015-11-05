@@ -34,7 +34,7 @@ var connect = require('gulp-connect');
 
 module.exports = function (gulp, config) {
 
-  return {
+  var tasks = {
     copyStatic: function() {
       var staticConfig = config.client.static;
       if (!_.isArray(staticConfig)) {
@@ -139,7 +139,7 @@ module.exports = function (gulp, config) {
     },
 
     buildScriptsDenyErrors: function (cb) {
-      return this.buildScripts(cb, true);
+      return tasks.buildScripts(cb, true);
     },
 
     buildVendors: function () {
@@ -195,4 +195,6 @@ module.exports = function (gulp, config) {
       return connect.reload();
     }
   };
+
+  return tasks;
 };

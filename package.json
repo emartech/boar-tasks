@@ -1,5 +1,5 @@
 {
-  "name": "boar-tasks",
+  "name": "@emartech/boar-tasks",
   "version": "2.14.0",
   "description": "",
   "main": "index.js",
